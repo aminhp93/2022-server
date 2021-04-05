@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
+from stocks.views import StockViewSet
+
+router = DefaultRouter()
+
+router.register(r'api/stock', StockViewSet, basename='stock')
+
+urlpatterns = router.urls + [
     path('admin/', admin.site.urls),
 ]
