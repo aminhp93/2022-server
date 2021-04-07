@@ -8,7 +8,7 @@ from stocks.serializers import StockSerializer
 
 class StockViewSet(viewsets.ViewSet):
     def list(self, request):
-        queryset = Stock.objects.all()
+        queryset = Stock.objects.filter(is_good_character=True)
         serializer = StockSerializer(queryset, many=True)
         return Response(serializer.data)
 
