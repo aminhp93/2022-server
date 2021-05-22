@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from stocks.views import StockViewSet
+from stocks import views as stocks_views
 
 router = DefaultRouter()
 
-router.register(r'api/stock', StockViewSet, basename='stock')
+router.register(r'api/stock', stocks_views.StockViewSet, basename='stock')
 
-urlpatterns = router.urls + [
+urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('api/stock/update-list-is-high-liquidity/',
+        view=stocks_views.StockUpdateListAPIView.as_view(),
+        name='update_list_is_high_liquidity')
+] + router.urls

@@ -1,10 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.response import Response
+from rest_framework.decorators import action
+
 
 from stocks.models import Stock
 from stocks.serializers import StockSerializer
+from rest_framework.views import APIView
+
 
 class StockViewSet(viewsets.ViewSet):
     def list(self, request):
@@ -37,4 +41,34 @@ class StockViewSet(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         stock = get_object_or_404(Stock, pk=pk)
         stock.delete()
+        return Response({})
+
+class StockUpdateListAPIView(APIView):
+    
+    def post(self, request, format=None):
+        some_string = self.request.data.get('strSymbols')
+        # x = 3
+        # list_symbols = [some_string[y-x:y] for y in range(x, len(some_string)+x,x)]
+
+        list_all = Stock.objects.all().values_list('symbol', flat=True)
+        
+        list_create = []
+        list_update = []
+        for i in some_string:
+            if i not in list_all:
+                list_create.append(i)
+            else:
+                list_update.append(i)
+        
+        Stock.objects.all().update(is_high_liquidity=False)
+        for i in list_update:                
+            Stock.objects.filter(symbol__in=list_update).update(is_high_liquidity=True)
+        
+        for i in list_create:                
+            Stock.objects.create(symbol=i, is_high_liquidity=True)
+            
+        
+        # [i.update_or_create(is_high_liquidity=True) for i in list_to_update]
+        
+
         return Response({})
