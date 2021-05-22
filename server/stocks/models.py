@@ -14,7 +14,6 @@ class Stock(TimeStampedModel):
     percent_support     = models.CharField(_('percent_support'), max_length=255, blank=True, null=True)
     profit_loss_ratio   = models.CharField(_('profit_loss_ratio'), max_length=255, blank=True, null=True)
     is_high_liquidity   = models.BooleanField(_('is_high_liquidity'), default=False)
-    is_good_character   = models.BooleanField(_('is_good_character'), default=False)
     est_buy_tich_san    = models.CharField(_('est_buy_tich_san'), max_length=255, blank=True, null=True)
     est_sell_tich_san   = models.CharField(_('est_sell_tich_san'), max_length=255, blank=True, null=True)
     is_blacklist        = models.BooleanField(_('is_blacklist'), default=False)
